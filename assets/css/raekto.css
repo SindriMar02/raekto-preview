@@ -1,0 +1,249 @@
+/* Ræktó additions on top of the Rio system (main.css): finder cells, filters, rig page, job rows, company text,
+   people, footer credit. Same tokens, same easing. Forked from the G.V. Gröfur fork of raftakn.css; where that fork
+   bent the system for 400 px photos (landscape cards, four columns) this file is back on the Raftákn values.
+   One content fact shapes this file: Ræktó's own photos are 800 x 800 px (three are 1920 px wide).
+   No rule here shows a photo above 1.1 x its real size. */
+
+/* ---------- their logo: a trace of the 200 px PNG on raekto.is, so it is never drawn wider than 220 px ---------- */
+.logo_m { fill: var(--logo-mark, var(--yellow)); }
+.logo_n { fill: var(--logo-name, currentColor); }
+.logo.is-nav { width: 6.25rem; }
+.logo.is-footer { width: min(13.75rem, 100%); }
+.logo.is-card { width: 46%; max-width: 13.75rem; --logo-mark: currentColor; }
+body[data-theme-nav="light"]:not(.is-menu-open) .logo.is-nav { --logo-name: var(--logo-grey); --logo-mark: #9db020; }
+@media (max-width: 767px) { .logo.is-nav { width: 5.25rem; } }
+
+/* their green as ink on paper */
+.is-brand, .rich_label, .law_a { color: var(--ink-green); }
+.checklist svg, .sector_i { color: var(--ink-green); }
+.hero_img { object-position: var(--pos, 50% 50%); }
+
+/* Sindri 2026-11-07: nothing hides behind hover. Card names, details and tile text are always on screen. */
+.card_grad { opacity: 1; }
+.card_line > span, .card_name > span { transform: none; }
+.persona_para { grid-template-rows: 1fr; }
+.persona_title > span { text-shadow: none; }
+/* a tile title is one long Icelandic word: the word sets the size, it is never cut (Cabinet Bold caps ≈ .66em a letter) */
+.persona_title { font-size: min(2.25rem, calc((100cqi - 5.75rem) / (var(--lw, 12) * .66))); }
+
+/* ---------- cards: the Raftákn proportions; the rig without a photo gets the deep tile with their logo ---------- */
+.card_noimg { display: grid; place-items: center; background: var(--green-800); color: rgb(255 254 252 / .22); }
+.card_details { grid-template-columns: minmax(0, 1fr) auto; }
+/* list view: the preview card stays within the photo's real size */
+.list_preview { flex: 0 1 min(50%, 50rem); }
+.list_year { margin-left: .75em; font-size: .55em; vertical-align: middle; color: var(--body); font-family: var(--f-body); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ---------- full-width photos: 1920 px wide and 600 to 800 px tall, so a hero is never taller than
+   its photo x 1.1 (--ph is the photo's pixel height) and the photo layer never wider than 2112 px ---------- */
+@media (min-width: 768px) {
+  .hero.is-landing, .hero.is-inner, .hero.is-inner .hero_layout { min-height: min(100svh, calc(var(--ph, 800) * 1.1px)); }
+  .hero_bg { inset: 0 max(0px, calc((100% - 2112px) / 2)); }
+}
+/* phones: the photo is a band at the top of the hero (its real height at two pixels per point), the copy sits on the deep ground below */
+@media (max-width: 767px) {
+  .hero.is-landing .hero_bg, .hero.is-inner .hero_bg { bottom: auto; height: min(100%, calc(var(--ph, 800) * .55px)); }
+  .hero.is-landing .hero_bg::after, .hero.is-inner .hero_bg::after { content: ''; position: absolute; inset: 55% 0 -1px; background: linear-gradient(transparent, var(--green-800)); }
+  /* an inner hero ends just under its photo band instead of holding a full dark screen below it */
+  .hero.is-inner, .hero.is-inner .hero_layout { min-height: calc(var(--ph, 800) * .55px + 6.5rem); }
+  .hero.is-inner .hero_layout { padding: 2rem 0; gap: 1.25rem; }
+}
+/* the wide image on the home page is their 1920 x 600 photo: the frame keeps its shape and never outgrows it */
+.fullimg_frame { aspect-ratio: 16 / 5; max-height: 38.75rem; max-width: 132rem; margin-inline: auto; }
+.fullimg_inner { inset: -5% 0; }
+@media (max-width: 767px) { .fullimg_frame { aspect-ratio: 5 / 3; } }
+
+/* ---------- landing: the finder lists the rigs by depth ---------- */
+.finder.is-sectors { gap: 1rem; }
+.sectors { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--l100); border: 1px solid var(--l100); }
+.sector { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: .5rem; min-height: 3.25rem; padding: .5rem .5rem .5rem .75rem; background: #fff; color: var(--green-800); font-weight: 500; font-size: .86rem; line-height: 1.2; transition: background-color .3s var(--ease-out), color .3s var(--ease-out); }
+.sector_l { white-space: nowrap; }
+.sector_n { font-size: .78rem; color: var(--body); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sector_i { width: 1rem; height: 1rem; }
+.sector_i svg { width: 100%; height: 100%; transition: transform .45s var(--ease-io); }
+@media (hover: hover) and (pointer: fine) {
+  .sector:hover { background: var(--green-500); color: var(--paper); }
+  .sector:hover .sector_n, .sector:hover .sector_i { color: var(--yellow); }
+  .sector:hover .sector_i svg { transform: translate(15%, -15%); }
+}
+.sector:focus-visible { outline: 2px solid var(--green-500); outline-offset: -2px; }
+a.finder_go { text-decoration: none; }
+/* inline links that are also tap targets: 24 px or taller */
+.finder_alt a, .story_meta a { display: inline-block; padding: .3rem 0; }
+.story_meta a { color: var(--ink-green); text-decoration: underline; text-underline-offset: .2em; }
+.landing_eyebrow { color: var(--yellow); }
+
+/* ---------- filters ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; }
+.filter { display: inline-flex; align-items: center; gap: .55rem; min-height: 2.75rem; padding: 0 1rem; border: 1px solid var(--border); color: var(--heading); font: 500 .95rem/1 var(--f-body); text-transform: uppercase; transition: background-color .3s var(--ease-out), color .3s var(--ease-out), border-color .3s; }
+.filter_n { font-size: .78rem; color: var(--body); font-variant-numeric: tabular-nums; transition: color .3s; }
+.filter.is-active { background: var(--green-500); border-color: var(--green-500); color: var(--paper); }
+.filter.is-active .filter_n { color: var(--yellow); }
+@media (hover: hover) and (pointer: fine) { .filter:not(.is-active):hover { border-color: var(--green-500); } }
+.filters_status { margin-top: 1rem; font-size: .9rem; color: var(--body); min-height: 1.35rem; }
+[data-cats][hidden] { display: none !important; }
+@media (max-width: 767px) { .filters { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); scrollbar-width: none; } .filters::-webkit-scrollbar { display: none; } .filter { flex: none; } }
+
+/* ---------- rig page (Rio's project hero: photo left, brand panel right) ----------
+   The photo is 800 px square, so it is never stretched across the column: a soft copy of it fills the column and
+   the photo itself sits framed in front at no more than 1.1 x its size. */
+.proj_hero { position: relative; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); min-height: 100svh; background: var(--green-800); }
+.proj_media { position: relative; overflow: clip; min-height: 66svh; display: grid; place-items: center; padding: calc(var(--nav-h) + 1rem) var(--margin) 3rem; }
+.proj_backdrop { position: absolute; inset: -8%; }
+.proj_backdrop img { width: 100%; height: 100%; object-fit: cover; filter: blur(28px) saturate(.9) brightness(.5); }
+.proj_photo { position: relative; width: min(100%, calc(var(--pw, 800) * 1.1px), calc((100svh - var(--nav-h) - 4rem) * var(--arn, 1))); aspect-ratio: var(--ar, 1); overflow: clip; box-shadow: 0 40px 80px -30px rgb(0 0 0 / .7); outline: 1px solid rgb(255 254 252 / .14); }
+.proj_photo .hero_scale { position: absolute; inset: 0; }
+.proj_noimg { position: absolute; inset: 0; display: grid; place-items: center; color: rgb(255 254 252 / .18); background-image: repeating-linear-gradient(135deg, rgb(255 254 252 / .03) 0 2px, transparent 2px 16px); }
+.proj_panel { display: flex; flex-direction: column; justify-content: space-between; gap: 3rem; padding: calc(var(--nav-h) + 1.5rem) var(--margin) 3rem 3rem; background: var(--bg); color: var(--text); }
+.proj_back { display: inline-flex; align-items: center; gap: .6rem; width: fit-content; min-height: 2.75rem; color: var(--accent); text-transform: uppercase; font-size: .95rem; }
+.proj_back svg { width: 1.1rem; height: 1.1rem; transform: rotate(-135deg); transition: transform .45s var(--ease-io); }
+@media (hover: hover) and (pointer: fine) { .proj_back:hover svg { transform: rotate(-135deg) translate(15%, -15%); } }
+.proj_titles { display: flex; flex-direction: column; gap: 1rem; }
+.proj_cat { color: var(--accent); }
+/* longest word decides the size, so a long Icelandic compound never breaks mid-word (Cabinet Bold caps ≈ .7em per letter, measured) */
+.proj_h1 { color: var(--paper); overflow-wrap: normal; hyphens: manual; font-size: min(var(--fs-h1), calc(31vw / (var(--lw, 10) * .7))); }
+.proj_sub { color: var(--green-300); }
+.proj_sub::first-letter { text-transform: uppercase; }
+.proj_facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.proj_facts .is-wide { grid-column: 1 / -1; }
+.proj_facts dt { font-size: .78rem; text-transform: uppercase; letter-spacing: .02em; color: var(--green-300); margin-bottom: .3rem; }
+.proj_facts dd { color: var(--paper); font-size: var(--fs-large); line-height: 1.4; font-variant-numeric: tabular-nums; }
+.proj_grid { align-items: start; }
+.proj_text { grid-column: 1 / 8; display: flex; flex-direction: column; gap: 1.5rem; }
+.proj_text .rich_label { margin-bottom: 0; text-transform: uppercase; font-size: .85rem; letter-spacing: .02em; }
+.proj_intro { color: var(--heading); font: 400 clamp(1.25rem, 1.1rem + .6vw, 1.6rem)/1.45 var(--f-body); text-transform: none; max-width: 52ch; }
+.proj_rich { display: flex; flex-direction: column; gap: 1rem; max-width: 62ch; color: var(--body); font-size: var(--fs-large); line-height: 1.65; }
+.proj_credit { font-size: .85rem; color: var(--body); }
+.proj_people { grid-column: 9 / 13; position: sticky; top: calc(var(--nav-h) + 1rem); }
+.proj_people .rich_label { text-transform: uppercase; font-size: .85rem; letter-spacing: .02em; }
+.proj_people ul { display: flex; flex-direction: column; }
+.proj_people li { display: flex; flex-direction: column; gap: .15rem; padding: 1rem 0; border-top: 1px solid var(--l100); }
+.proj_pname { color: var(--heading); font-weight: 500; }
+.proj_prole { font-size: .9rem; color: var(--body); font-variant-numeric: tabular-nums; }
+.proj_people a { font-size: .9rem; color: var(--ink-green); width: fit-content; padding: .35rem 0; text-decoration: underline; text-underline-offset: .2em; }
+/* the other photos of the rig: squares, as uploaded, three across */
+.proj_gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.proj_gallery.is-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 82rem; }
+.proj_side { grid-column: 8 / 13; }
+.proj_fig { position: relative; overflow: clip; aspect-ratio: 1; background: var(--l100); }
+.proj_fig img { width: 100%; height: 100%; object-fit: cover; }
+.proj_nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
+.proj_next { display: flex; flex-direction: column; gap: .5rem; padding: 1.75rem 0; border-top: 1px solid var(--green-500); color: var(--heading); text-align: right; align-items: flex-end; }
+.proj_next.is-prev { text-align: left; align-items: flex-start; }
+.proj_next_l { font-size: .8rem; text-transform: uppercase; color: var(--body); }
+.proj_next .h4 { overflow-wrap: anywhere; }
+@media (hover: hover) and (pointer: fine) { .proj_next:hover .h4 { color: var(--ink-green); } }
+@media (max-width: 991px) {
+  .proj_hero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .proj_media { min-height: 0; padding: calc(var(--nav-h) + .5rem) var(--margin) 2rem; }
+  .proj_photo { width: min(100%, calc(var(--pw, 800) * 1.1px), 62svh); }
+  .proj_panel { padding: 2.5rem var(--margin); }
+  .proj_h1 { font-size: min(var(--fs-h1), calc((100vw - 2 * var(--margin)) / (var(--lw, 10) * .7))); }
+  .proj_text { grid-column: 1 / -1; }
+  .proj_people { grid-column: 1 / -1; position: static; margin-top: 3rem; }
+  .proj_side { grid-column: 1 / -1; width: min(100%, 30rem); margin-top: 2rem; }
+}
+@media (max-width: 767px) {
+  .proj_h1 { font-size: min(13vw, calc((100vw - 2 * var(--margin)) / (var(--lw, 10) * .7))); }
+  .sectors { grid-template-columns: minmax(0, 1fr); }
+  .sector { min-height: 2.75rem; font-size: .92rem; }
+  .proj_gallery, .proj_gallery.is-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  .proj_nav { grid-template-columns: minmax(0, 1fr); }
+  .proj_next, .proj_next.is-prev { text-align: left; align-items: flex-start; }
+}
+
+/* ---------- a page head without a photo (the jobs have none): the contact page's head, at its own height ---------- */
+.pagehead .contact_sub { max-width: 34rem; }
+.section.note { padding-bottom: 0; }
+@media (max-width: 767px) { .pagehead .display { font-size: min(var(--fs-display), 15vw); } .pagehead .spacer.is-page-top:first-child { height: 7rem; } }
+/* the phone hero puts the eyebrow on the photo band: a deeper shade so the green line reads */
+@media (max-width: 767px) { .landing_shade { background: linear-gradient(0deg, rgb(10 10 11 / .9), rgb(10 10 11 / .62) 60%, rgb(10 10 11 / .55)); } }
+
+/* ---------- what waits for Ræktó's word ---------- */
+.proto { max-width: 62ch; padding: .9rem 1rem; border-left: 3px solid var(--yellow); background: rgb(170 189 39 / .1); color: var(--body); font-size: .92rem; line-height: 1.55; }
+.proto b { color: var(--heading); font-weight: 500; }
+
+/* ---------- names grid as the list of jobs: each cell is a link ---------- */
+.logo_cell.is-link { padding: 0; }
+.logo_cell.is-link a { width: 100%; height: 100%; display: grid; place-content: center; gap: .4rem; padding: 12%; color: inherit; }
+.logo_cell.is-link small { font: 400 .78rem/1.3 var(--f-body); text-transform: none; color: var(--body); transition: color .5s var(--ease-out); }
+.logo_cell.is-link a:focus-visible { outline: 2px solid var(--green-500); outline-offset: -4px; }
+.logo_cell.is-all span { color: var(--ink-green); }
+@media (hover: hover) and (pointer: fine) { .logo_cell.is-link:hover small, .logo_cell.is-all:hover span { color: var(--yellow); } }
+.logo_cell.is-link:active { background: var(--green-500); color: var(--paper); }
+/* eight cells are two rows: the side bleeds follow */
+.logos_wrap.is-rows-2 .logos_bleed.is-left, .logos_wrap.is-rows-2 .logos_bleed.is-right { grid-template-rows: repeat(2, 1fr); }
+.logos_wrap.is-rows-2 .logos_bleed.is-left span:nth-child(n+3), .logos_wrap.is-rows-2 .logos_bleed.is-right span:nth-child(n+3) { display: none; }
+
+/* ---------- jobs and company text: rule-separated rows, heading left, text right ---------- */
+.story_list { display: flex; flex-direction: column; }
+.story_row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 1.5rem var(--gutter); padding: 2.5rem 0; border-top: 1px solid var(--border); scroll-margin-top: 7rem; }
+.story_row:last-child { border-bottom: 1px solid var(--border); }
+.story_h { color: var(--heading); text-transform: uppercase; overflow-wrap: break-word; hyphens: manual; }
+.story_meta { margin-top: .6rem; font-size: .92rem; color: var(--body); text-transform: uppercase; letter-spacing: .02em; }
+.story_text { display: flex; flex-direction: column; gap: 1rem; max-width: 68ch; color: var(--body); font-size: var(--fs-large); line-height: 1.7; }
+.job_figs { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; }
+.job_figs dd { font: 700 var(--fs-h4)/1.1 var(--f-display); color: var(--heading); font-variant-numeric: tabular-nums; text-transform: uppercase; }
+.job_figs dt { font-size: .78rem; text-transform: uppercase; letter-spacing: .02em; color: var(--body); margin-bottom: .25rem; }
+.job_figs div { display: flex; flex-direction: column; }
+.job_src { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; width: fit-content; color: var(--ink-green); font-size: .95rem; }
+.job_src svg { width: 1.1rem; height: 1.1rem; flex: none; transition: transform .45s var(--ease-io); }
+@media (hover: hover) and (pointer: fine) { .job_src:hover svg { transform: translate(15%, -15%); } .job_src:hover span { text-decoration: underline; text-underline-offset: .2em; } }
+@media (max-width: 767px) { .story_row { grid-template-columns: minmax(0, 1fr); padding: 2rem 0; } }
+
+/* ---------- the 2007 film: three parts, their own 640 x 480 frames, opening on YouTube ---------- */
+.films { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); max-width: 68ch; margin-top: .5rem; }
+.film { display: flex; flex-direction: column; gap: .5rem; color: var(--heading); }
+.film_frame { position: relative; aspect-ratio: 4 / 3; overflow: clip; background: var(--green-800); }
+.film_frame img { width: 100%; height: 100%; object-fit: cover; transition: scale .75s var(--ease-io); }
+.film_play { position: absolute; right: 0; bottom: 0; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; background: var(--yellow); color: var(--green-800); }
+.film_play svg { width: 1.1rem; height: 1.1rem; transition: transform .45s var(--ease-io); }
+.film_l { font-size: .9rem; text-transform: uppercase; }
+@media (hover: hover) and (pointer: fine) { .film:hover .film_frame img { scale: 1.04; } .film:hover .film_play svg { transform: translate(15%, -15%); } }
+@media (max-width: 479px) { .films { grid-template-columns: minmax(0, 1fr); max-width: 20rem; } }
+
+/* ---------- people (their site prints no portraits: initials tiles) ---------- */
+.team_head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem 2rem; flex-wrap: wrap; }
+.staff_grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2.5rem var(--gutter); }
+.staff { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.staff_frame { position: relative; aspect-ratio: 5 / 3; overflow: clip; background: var(--green-500); margin-bottom: .75rem; }
+.staff_initials { position: absolute; inset: 0; display: grid; place-items: center; font: 700 clamp(1.75rem, 3vw, 2.75rem)/1 var(--f-display); color: var(--yellow); }
+.staff_name { color: var(--heading); }
+.staff_role { font-size: .92rem; color: var(--body); line-height: 1.4; }
+.staff_contact { display: flex; flex-direction: column; margin-top: .25rem; }
+.staff_contact a { font-size: .88rem; color: var(--ink-green); padding: .3rem 0; overflow-wrap: anywhere; width: fit-content; font-variant-numeric: tabular-nums; }
+@media (max-width: 1239px) { .staff_grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 991px) { .staff_grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 767px) { .staff_grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem .75rem; } }
+
+/* ---------- contact page office ---------- */
+.offices { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; color: var(--paper); }
+.offices.is-one { grid-template-columns: minmax(0, 1fr); }
+.office { display: flex; flex-direction: column; gap: .5rem; }
+.office_h { font: 700 var(--fs-h6)/1.2 var(--f-display); text-transform: uppercase; color: var(--yellow); }
+.office a { display: inline-flex; align-items: center; gap: .55rem; min-height: 2.5rem; width: fit-content; color: var(--paper); }
+.office svg { width: 1.1rem; height: 1.1rem; flex: none; color: var(--yellow); }
+
+/* ---------- footer ---------- */
+.footer_h { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: var(--green-300); margin-bottom: .6rem; }
+.footer_credit { display: flex; justify-content: space-between; align-items: center; gap: 1rem 2rem; flex-wrap: wrap; padding-top: 1.5rem; margin-top: 2rem; border-top: 1px solid rgb(255 254 252 / .14); font-size: .82rem; color: rgb(255 254 252 / .6); }
+.footer_credit p { max-width: 70ch; }
+/* every place name stays on screen on phones */
+@media (max-width: 767px) { .logo_cell:nth-child(7), .logo_cell:nth-child(8) { display: grid; } }
+/* a rig without a photo, on tablet and phone: the logo tile keeps a height of its own, clear of the menu bar */
+@media (max-width: 991px) { .proj_media.is-empty { min-height: 16rem; } }
+/* phone numbers never break across lines; plain text links answer the pointer */
+a[href^="tel:"] { white-space: nowrap; }
+@media (hover: hover) and (pointer: fine) { .staff_contact a:hover, .office a:hover, .finder_alt a:hover { text-decoration: underline; text-underline-offset: .2em; } }
+/* list view: the script centres the current row using offsetTop, which needs the scrolling box as its offset parent.
+   Without this the current row is scrolled up under the top fade and the highlighted name is never seen. */
+.list_names { position: relative; }
+/* eight names, not seventy-four: the whole list is on screen at once, so the box takes its own height and
+   nothing is faded out at its top or bottom. The scroll still moves the highlight and the preview. */
+.list_names { height: auto; max-height: calc(100svh - 8rem); mask-image: none; -webkit-mask-image: none; }
+.list_ul { padding: 0; }
+/* a figure and its unit stay on one line */
+.job_figs dd, .card_meta, .proj_facts dd { white-space: nowrap; }
+/* reduced motion: the small hover moves added here stay still too */
+html.no-anim .film_frame img, html.no-anim .film_play svg, html.no-anim .job_src svg, html.no-anim .sector_i svg, html.no-anim .proj_back svg { transition: none; }
+/* on touch screens every button is 44 px or taller */
+@media (pointer: coarse) { .btn, .more { min-height: 2.75rem; } .more { padding-block: .5rem; } }
